@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:collection/collection.dart';
 
 import 'package:barnbok/models/card_info.dart';
+import 'package:barnbok/features/timeline_screens/timeline_screen.dart';
 import 'package:barnbok/repositories/card_data_repository.dart';
 import 'package:barnbok/repositories/hive_card_data_repository.dart';
 import 'package:barnbok/features/menu_screens/widgets/story_dialog.dart'; // Ensure this path is correct
@@ -128,42 +129,27 @@ class _StoryCarouselState extends State<StoryCarousel> {
   }
 
   // --- Handler for TAPPING a card ---
-  Future<void> _onCardTap(int index) async {
-    if (_isLoading || _hasError) {
-      print("StoryCarousel: Cannot handle tap, repository not ready.");
-      return;
-    }
-    print('Card tapped at index: $index');
+Future<void> _onCardTap(int index) async {
+  if (_isLoading || _hasError) return;
 
-    final CardInfo? existingCard = _savedCards.firstWhereOrNull(
-      (card) => card.positionIndex == index
-    );
+  final CardInfo? existingCard = _savedCards.firstWhereOrNull(
+    (card) => card.positionIndex == index
+  );
 
-    if (existingCard != null) {
-      // --- TAP on EXISTING card ---
-      print('Existing card tapped. Navigating to timeline (TODO)...');
-      print('Existing Card Info: $existingCard');
-      // TODO: Navigate to the timeline screen, passing existingCard.uniqueId
-    } else {
-      // --- TAP on EMPTY card ---
-      print('Empty card tapped. Showing create dialog...');
-      // Call dialog in CREATE mode (no existingCard passed)
-      final result = await showCreateStoryDialog(context, index); // No existingCard
-
-      if (result == true) {
-        print('Create dialog successful.');
-        if (!mounted) return;
-        print("Reloading data...");
-        await _loadInitialCardData();
-        if (mounted) {
-          setState(() {});
-          print("Data reloaded.");
-        }
-      } else {
-        print('Create dialog cancelled or failed.');
-      }
+  if (existingCard != null) {
+    // Existing card tapped. Navigate to timeline_screen.dart
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => TimelineScreen(cardInfo: existingCard),
+    ));
+  } else {
+    // Empty card tapped (existing logic)
+    final result = await showCreateStoryDialog(context, index);
+    if (result == true) {
+      await _loadInitialCardData();
+      if (mounted) setState(() {});
     }
   }
+}
 
   // --- NEW: Handler for LONG PRESSING a card ---
   Future<void> _onCardLongPress(CardInfo cardToEdit) async {
