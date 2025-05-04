@@ -54,7 +54,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start, // Changed to start to align the line with date below
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
                           children: [
@@ -63,7 +63,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                               width: 3,
                               color: Colors.black,
                             ),
-                            const SizedBox(height: 8), // Increased spacing
+                            const SizedBox(height: 8),
                             GestureDetector(
                               onTap: () => _selectDate(context, true),
                               child: Text(
@@ -73,10 +73,18 @@ class _TimelineScreenState extends State<TimelineScreen> {
                             ),
                           ],
                         ),
+                        // Create a Row that contains the line to ensure it reaches the markers
                         Expanded(
-                          child: Container(
-                            height: 1.5,
-                            color: Colors.grey,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 1.5,
+                                  color: Colors.grey,
+                                  margin: EdgeInsets.only(top: 12.25), // Center the line with the markers (25/2 - 1.5/2 = 11.75 + a bit for visual alignment)
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Column(
@@ -86,7 +94,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                               width: 3,
                               color: Colors.black,
                             ),
-                            const SizedBox(height: 8), // Increased spacing
+                            const SizedBox(height: 8),
                             GestureDetector(
                               onTap: () => _selectDate(context, false),
                               child: Text(
@@ -100,17 +108,19 @@ class _TimelineScreenState extends State<TimelineScreen> {
                     ),
                   ],
                 )
-              : SizedBox(
-                  width: 50, // Fixed width for the portrait timeline
-                  child: Column(
+              : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center, // Center alignment
                     children: [
                       GestureDetector(
                         onTap: () => _selectDate(context, false),
-                        child: Text(
-                          '${endDate.toLocal()}'.split(' ')[0],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        child: Container(
+                          width: 120, // Wider container to fit the date on one line
+                          child: Text(
+                            '${endDate.toLocal()}'.split(' ')[0],
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                       Expanded(
@@ -121,14 +131,17 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       ),
                       GestureDetector(
                         onTap: () => _selectDate(context, true),
-                        child: Text(
-                          '${startDate.toLocal()}'.split(' ')[0],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        child: Container(
+                          width: 120, // Wider container to fit the date on one line
+                          child: Text(
+                            '${startDate.toLocal()}'.split(' ')[0],
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
         ),
       ),
     );
