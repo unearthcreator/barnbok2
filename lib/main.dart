@@ -1,4 +1,4 @@
-// main.dart - UPDATED VERSION WITH TUTORIAL FLAG INITIALIZATION
+// main.dart - UPDATED VERSION WITH TEMPORARY TUTORIAL FLAG RESET FOR TESTING
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -29,12 +29,11 @@ Future<void> main() async {
 
     print('Initializing SharedPreferences...');
     final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('hasSeenTimelineTutorial')) {
-      await prefs.setBool('hasSeenTimelineTutorial', false);
-      print('Tutorial preference initialized to false.');
-    } else {
-      print('Tutorial preference already set.');
-    }
+
+    // --- TEMPORARY FOR TESTING: Reset tutorial flag EVERY RUN ---
+    await prefs.setBool('hasSeenTimelineTutorial', false);
+    print('Tutorial preference temporarily reset to false (FOR TESTING ONLY).');
+    // -------------------------------------------------------------
 
   } catch (e, stackTrace) {
     print('FATAL ERROR during app initialization: $e\n$stackTrace');
