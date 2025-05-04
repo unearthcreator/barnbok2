@@ -48,77 +48,88 @@ class _TimelineScreenState extends State<TimelineScreen> {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: isLandscape
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () => _selectDate(context, true),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+        child: Center( // Wrap with Center to ensure centering in both orientations
+          child: isLandscape
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start, // Changed to start to align the line with date below
+                      children: [
+                        Column(
                           children: [
                             Container(
                               height: 25,
                               width: 3,
                               color: Colors.black,
                             ),
-                            const SizedBox(height: 4),
-                            Text('${startDate.toLocal()}'.split(' ')[0],
-                                style: const TextStyle(fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 8), // Increased spacing
+                            GestureDetector(
+                              onTap: () => _selectDate(context, true),
+                              child: Text(
+                                '${startDate.toLocal()}'.split(' ')[0],
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ],
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 1.5,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              height: 25,
+                              width: 3,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(height: 8), // Increased spacing
+                            GestureDetector(
+                              onTap: () => _selectDate(context, false),
+                              child: Text(
+                                '${endDate.toLocal()}'.split(' ')[0],
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              : SizedBox(
+                  width: 50, // Fixed width for the portrait timeline
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center, // Center alignment
+                    children: [
+                      GestureDetector(
+                        onTap: () => _selectDate(context, false),
+                        child: Text(
+                          '${endDate.toLocal()}'.split(' ')[0],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                       Expanded(
                         child: Container(
-                          height: 1.5,
+                          width: 2,
                           color: Colors.grey,
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _selectDate(context, false),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              height: 25,
-                              width: 3,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(height: 4),
-                            Text('${endDate.toLocal()}'.split(' ')[0],
-                                style: const TextStyle(fontWeight: FontWeight.bold)),
-                          ],
+                        onTap: () => _selectDate(context, true),
+                        child: Text(
+                          '${startDate.toLocal()}'.split(' ')[0],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
                   ),
-                ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => _selectDate(context, false),
-                    child: Text('${endDate.toLocal()}'.split(' ')[0],
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
-                  ),
-                  Expanded(
-                    child: Container(
-                      width: 2,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => _selectDate(context, true),
-                    child: Text('${startDate.toLocal()}'.split(' ')[0],
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
-                  ),
-                ],
-              ),
+                ),
+        ),
       ),
     );
   }
