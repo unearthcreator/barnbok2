@@ -6,10 +6,13 @@ import 'package:hive/hive.dart';
 import 'package:collection/collection.dart';
 
 import 'package:barnbok/models/card_info.dart';
-import 'package:barnbok/features/timeline_screens/timeline_screen.dart';
 import 'package:barnbok/repositories/card_data_repository.dart';
 import 'package:barnbok/repositories/hive_card_data_repository.dart';
 import 'package:barnbok/features/menu_screens/widgets/story_dialog.dart'; // Ensure this path is correct
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:barnbok/features/timeline_screens/timeline_screen.dart';
+import 'package:barnbok/features/timeline_screens/first_time_timeline_screen.dart';
+
 
 class StoryCarousel extends StatefulWidget {
   const StoryCarousel({super.key});
@@ -133,16 +136,24 @@ Future<void> _onCardTap(int index) async {
   if (_isLoading || _hasError) return;
 
   final CardInfo? existingCard = _savedCards.firstWhereOrNull(
-    (card) => card.positionIndex == index
+    (card) => card.positionIndex == index,
   );
 
   if (existingCard != null) {
-    // Existing card tapped. Navigate to timeline_screen.dart
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) => TimelineScreen(cardInfo: existingCard),
-    ));
+    // Check if tutorial has been seen
+    final prefs = await SharedPreferences.getInstance();
+    final hasSeenTutorial = prefs.getBool('hasSeenTimelineTutorial') ?? false;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => hasSeenTutorial
+            ? TimelineScreen(cardInfo: existingCard) // Go directly if seen
+            : FirstTimelineScreen(cardInfo: existingCard), // Go via tutorial if first time
+      ),
+    );
   } else {
-    // Empty card tapped (existing logic)
+    // Existing logic for empty cards
     final result = await showCreateStoryDialog(context, index);
     if (result == true) {
       await _loadInitialCardData();

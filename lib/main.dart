@@ -1,7 +1,8 @@
-// main.dart - TEMPORARY VERSION TO CLEAR BOX
+// main.dart - UPDATED VERSION WITH TUTORIAL FLAG INITIALIZATION
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Import your project files (!!! ADJUST PATHS AS NEEDED !!!)
 import 'core/shared/services/error_handler.dart';
@@ -18,19 +19,26 @@ Future<void> main() async {
     await Hive.initFlutter();
     print('Hive Initialized.');
 
-    // --- END TEMPORARY ---
-
     print('Registering CardInfoAdapter...');
     Hive.registerAdapter(CardInfoAdapter());
     print('CardInfoAdapter Registered.');
 
     print('Opening Hive Box: "${HiveCardDataRepository.boxName}"...');
-    await Hive.openBox<CardInfo>(HiveCardDataRepository.boxName); // Open the (now empty) box
+    await Hive.openBox<CardInfo>(HiveCardDataRepository.boxName);
     print('Hive Box "${HiveCardDataRepository.boxName}" opened successfully.');
 
+    print('Initializing SharedPreferences...');
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('hasSeenTimelineTutorial')) {
+      await prefs.setBool('hasSeenTimelineTutorial', false);
+      print('Tutorial preference initialized to false.');
+    } else {
+      print('Tutorial preference already set.');
+    }
+
   } catch (e, stackTrace) {
-     print('FATAL ERROR during app initialization: $e\n$stackTrace');
-     // ErrorHandler.logError('App Initialization Failed', e, stackTrace);
+    print('FATAL ERROR during app initialization: $e\n$stackTrace');
+    // ErrorHandler.logError('App Initialization Failed', e, stackTrace);
   }
 
   ErrorHandler.initialize();
