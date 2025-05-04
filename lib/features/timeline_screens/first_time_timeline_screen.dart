@@ -36,9 +36,13 @@ class _FirstTimelineScreenState extends State<FirstTimelineScreen> with SingleTi
     super.dispose();
   }
 
-  Future<void> _completeTutorialAndContinue(BuildContext context) async {
+    Future<void> _completeTutorialAndContinue(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasSeenTimelineTutorial', true);
+
+    // Update cardInfo's theme color
+    widget.cardInfo.themeColorValue = _selectedColor.value;
+    await widget.cardInfo.save(); // <-- Important: save changes to Hive
 
     Navigator.pushReplacement(
       context,
@@ -47,7 +51,7 @@ class _FirstTimelineScreenState extends State<FirstTimelineScreen> with SingleTi
       ),
     );
   }
-
+  
   @override
   Widget build(BuildContext context) {
     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
