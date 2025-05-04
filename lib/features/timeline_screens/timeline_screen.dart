@@ -45,7 +45,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Timeline for ${widget.cardInfo.surname}')),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: isLandscape
@@ -53,31 +53,43 @@ class _TimelineScreenState extends State<TimelineScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       GestureDetector(
                         onTap: () => _selectDate(context, true),
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
+                            Container(
+                              height: 25,
+                              width: 3,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(height: 4),
                             Text('${startDate.toLocal()}'.split(' ')[0],
                                 style: const TextStyle(fontWeight: FontWeight.bold)),
-                            const Icon(Icons.location_on),
                           ],
                         ),
                       ),
                       Expanded(
                         child: Container(
-                          height: 2,
+                          height: 1.5,
                           color: Colors.grey,
                         ),
                       ),
                       GestureDetector(
                         onTap: () => _selectDate(context, false),
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
+                            Container(
+                              height: 25,
+                              width: 3,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(height: 4),
                             Text('${endDate.toLocal()}'.split(' ')[0],
                                 style: const TextStyle(fontWeight: FontWeight.bold)),
-                            const Icon(Icons.location_on),
                           ],
                         ),
                       ),
@@ -91,13 +103,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
                 children: [
                   GestureDetector(
                     onTap: () => _selectDate(context, false),
-                    child: Column(
-                      children: [
-                        const Icon(Icons.location_on),
-                        Text('${endDate.toLocal()}'.split(' ')[0],
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
+                    child: Text('${endDate.toLocal()}'.split(' ')[0],
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   Expanded(
                     child: Container(
@@ -107,13 +114,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
                   ),
                   GestureDetector(
                     onTap: () => _selectDate(context, true),
-                    child: Column(
-                      children: [
-                        const Icon(Icons.location_on),
-                        Text('${startDate.toLocal()}'.split(' ')[0],
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
+                    child: Text('${startDate.toLocal()}'.split(' ')[0],
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
