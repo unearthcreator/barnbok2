@@ -132,16 +132,15 @@ class _CreateStoryDialogContentState extends State<_CreateStoryDialogContent> {
         }
         // --- End determining details ---
 
-        // Create the CardInfo object with determined details
-        final cardDataToSave = CardInfo(
-          uniqueId: uniqueId,
-          surname: surname,
-          lastName: lastName.isEmpty ? null : lastName, // Store null if empty
-          imagePath: imagePathToSave,
-          positionIndex: positionIndex,
-          // Optional: Handle other fields like serverId if necessary for updates
-          // serverId: widget.existingCard?.serverId,
-        );
+        // Create the CardInfo object with determined details and default themeColorValue
+            final cardDataToSave = CardInfo(
+              uniqueId: uniqueId,
+              surname: surname,
+              lastName: lastName.isEmpty ? null : lastName,
+              imagePath: imagePathToSave,
+              positionIndex: positionIndex,
+              themeColorValue: Colors.lightBlue.value, // <-- Default theme color set here
+            );
 
         print('CreateStoryDialog: Attempting to save (${isEditing ? "Edit" : "Create"})...');
         // Assuming repository handles create vs update based on uniqueId/key

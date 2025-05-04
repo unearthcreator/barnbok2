@@ -2,7 +2,7 @@
 
 import 'package:hive/hive.dart';
 
-part 'card_info.g.dart'; // Link to generated adapter
+part 'card_info.g.dart';
 
 @HiveType(typeId: 0)
 class CardInfo extends HiveObject {
@@ -11,11 +11,10 @@ class CardInfo extends HiveObject {
   String uniqueId;
 
   @HiveField(1)
-  String surname; // First name remains required
+  String surname;
 
-  // --- CHANGE HERE: Make lastName nullable ---
   @HiveField(2)
-  String? lastName; // Changed from String to String?
+  String? lastName;
 
   @HiveField(3)
   String imagePath;
@@ -26,21 +25,22 @@ class CardInfo extends HiveObject {
   @HiveField(5)
   String? serverId;
 
+  // --- NEW FIELD: Theme color stored as integer ---
+  @HiveField(6)
+  int themeColorValue;
 
-  // --- Constructor Update ---
   CardInfo({
     required this.uniqueId,
     required this.surname,
-    // --- CHANGE HERE: Allow lastName to be null ---
-    this.lastName, // No longer strictly required to be non-null, but still required parameter in constructor call (can pass null or empty string)
+    this.lastName,
     required this.imagePath,
     required this.positionIndex,
     this.serverId,
+    required this.themeColorValue, // <-- Added this
   });
 
-  // Optional: Update toString for easier debugging with nullable lastName
   @override
   String toString() {
-    return 'CardInfo(uniqueId: $uniqueId, surname: $surname, lastName: ${lastName ?? "N/A"}, imagePath: $imagePath, positionIndex: $positionIndex, serverId: $serverId)';
+    return 'CardInfo(uniqueId: $uniqueId, surname: $surname, lastName: ${lastName ?? "N/A"}, imagePath: $imagePath, positionIndex: $positionIndex, serverId: $serverId, themeColorValue: $themeColorValue)';
   }
 }

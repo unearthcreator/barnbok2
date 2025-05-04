@@ -23,13 +23,14 @@ class CardInfoAdapter extends TypeAdapter<CardInfo> {
       imagePath: fields[3] as String,
       positionIndex: fields[4] as int,
       serverId: fields[5] as String?,
+      themeColorValue: fields[6] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, CardInfo obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.uniqueId)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class CardInfoAdapter extends TypeAdapter<CardInfo> {
       ..writeByte(4)
       ..write(obj.positionIndex)
       ..writeByte(5)
-      ..write(obj.serverId);
+      ..write(obj.serverId)
+      ..writeByte(6)
+      ..write(obj.themeColorValue);
   }
 
   @override
