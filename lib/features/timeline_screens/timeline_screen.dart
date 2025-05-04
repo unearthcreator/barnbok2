@@ -48,100 +48,77 @@ class _TimelineScreenState extends State<TimelineScreen> {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Center( // Wrap with Center to ensure centering in both orientations
+        child: Center(
           child: isLandscape
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Timeline with no vertical markers
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Container(
+                        height: 2.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    // Dates below timeline edges
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          children: [
-                            Container(
-                              height: 25,
-                              width: 3,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(height: 8),
-                            GestureDetector(
-                              onTap: () => _selectDate(context, true),
-                              child: Text(
-                                '${startDate.toLocal()}'.split(' ')[0],
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Create a Row that contains the line to ensure it reaches the markers
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: 1.5,
-                                  color: Colors.grey,
-                                  margin: EdgeInsets.only(top: 12.25), // Center the line with the markers (25/2 - 1.5/2 = 11.75 + a bit for visual alignment)
-                                ),
-                              ),
-                            ],
+                        // Start date
+                        GestureDetector(
+                          onTap: () => _selectDate(context, true),
+                          child: Text(
+                            '${startDate.toLocal()}'.split(' ')[0],
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Column(
-                          children: [
-                            Container(
-                              height: 25,
-                              width: 3,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(height: 8),
-                            GestureDetector(
-                              onTap: () => _selectDate(context, false),
-                              child: Text(
-                                '${endDate.toLocal()}'.split(' ')[0],
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
+                        // End date
+                        GestureDetector(
+                          onTap: () => _selectDate(context, false),
+                          child: Text(
+                            '${endDate.toLocal()}'.split(' ')[0],
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     ),
                   ],
                 )
               : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center, // Center alignment
-                    children: [
-                      GestureDetector(
-                        onTap: () => _selectDate(context, false),
-                        child: Container(
-                          width: 120, // Wider container to fit the date on one line
-                          child: Text(
-                            '${endDate.toLocal()}'.split(' ')[0],
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center, // Center alignment
+                  children: [
+                    GestureDetector(
+                      onTap: () => _selectDate(context, true),
+                      child: Container(
+                        width: 120, // Wider container to fit the date on one line
+                        child: Text(
+                          '${startDate.toLocal()}'.split(' ')[0],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      Expanded(
-                        child: Container(
-                          width: 2,
-                          color: Colors.grey,
+                    ),
+                    Expanded(
+                      child: Container(
+                        width: 2,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => _selectDate(context, false),
+                      child: Container(
+                        width: 120, // Wider container to fit the date on one line
+                        child: Text(
+                          '${endDate.toLocal()}'.split(' ')[0],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () => _selectDate(context, true),
-                        child: Container(
-                          width: 120, // Wider container to fit the date on one line
-                          child: Text(
-                            '${startDate.toLocal()}'.split(' ')[0],
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );
