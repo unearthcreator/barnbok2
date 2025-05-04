@@ -1,6 +1,7 @@
-// main.dart - UPDATED VERSION WITH TEMPORARY TUTORIAL FLAG RESET FOR TESTING
+// main.dart - UPDATED VERSION WITH TEMPORARY TUTORIAL FLAG RESET AND STATUS BAR REMOVAL
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Added for status bar control
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,9 @@ import 'repositories/hive_card_data_repository.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   print('Flutter Widgets Initialized.');
+
+  // Hide status bar globally
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
   try {
     print('Initializing Hive...');
